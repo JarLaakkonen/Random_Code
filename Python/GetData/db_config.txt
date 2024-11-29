@@ -1,0 +1,4 @@
+host=localhost
+user=dataa
+password=kurkkumopo
+database=anturi

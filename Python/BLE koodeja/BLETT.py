@@ -9,10 +9,10 @@ last_received_time = 0
 paska = []
 
 db_connection = mysql.connector.connect(
-    host="",    
-    user="",           
-    password="",   
-    database=""      
+    host="localhost",    
+    user="root",           
+    password="perkele123",   
+    database="anturi"      
 )
 
 def notification_handler(sender, data):
