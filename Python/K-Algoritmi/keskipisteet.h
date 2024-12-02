@@ -1,15 +1,13 @@
 #ifndef KESKIPISTEET_H
 #define KESKIPISTEET_H
 
-#define KESKIPISTEET_LKM 6
-
-static const double keskipisteet[KESKIPISTEET_LKM][3] = {
-    {1654, 1618, 1324},
-    {1663, 1929, 1652},
-    {1655, 1286, 1639},
-    {1978, 1609, 1641},
-    {1371, 1660, 1676},
-    {1672, 1610, 1964},
+static const int keskipisteet[6][3] = {
+    {1978, 1608, 1639},
+    {1352, 1639, 1677},
+    {1662, 1929, 1654},
+    {1658, 1285, 1641},
+    {1670, 1617, 1959},
+    {1632, 1618, 1320},
 };
 
 #endif // KESKIPISTEET_H
