@@ -18,11 +18,12 @@
 #include "confusion.h"
 
 
-
+// ledit käyttöön
 #define USER_LED1         	 	DK_LED1
 #define USER_LED2          		DK_LED2
 #define USER_LED3               DK_LED3
 #define USER_LED4               DK_LED4
+// buttonit käyttöön
 
 #define USER_BUTTON_1           DK_BTN1_MSK
 #define USER_BUTTON_2           DK_BTN2_MSK
@@ -41,12 +42,15 @@ static int direction = -1;	// 0 = x direction high
 
 LOG_MODULE_REGISTER(MAIN, LOG_LEVEL_INF);
 
-static void button_changed(uint32_t button_state, uint32_t has_changed)
-{
+
+// buttoni handleri!
+static void button_changed(uint32_t button_state, uint32_t has_changed){
+	// Debugausta varten
 	//printk("button_state = %d\n",button_state);
 	//printk("has_changed = %d\n",has_changed);
-	if ((has_changed & USER_BUTTON_1) && (button_state & USER_BUTTON_1)) 
-	{
+
+
+	if ((has_changed & USER_BUTTON_1) && (button_state & USER_BUTTON_1)) {
 		printk("Button 1 down, printing current Confusion Matrix\n");
 		printConfusionMatrix();
 	}
@@ -61,6 +65,7 @@ static void button_changed(uint32_t button_state, uint32_t has_changed)
 	if ((has_changed & USER_BUTTON_3) && (button_state & USER_BUTTON_3)) 
 	{
 		printk("Button 3 down, making fake 100 meas or one real meas depending on DEBUG state\n");
+		// vaihda Debug arvoa jos haluat käyttää Elsen jälkeisiä komentoja
 		#if DEBUG
 		direction = 0;
 		makeHundredFakeClassifications();
@@ -97,7 +102,7 @@ static void button_changed(uint32_t button_state, uint32_t has_changed)
 		printk("x = %d,  y = %d,  z = %d\n",m.x,m.y,m.z);
 		#endif
 	}		
-
+		// perus button 4
 	if ((has_changed & USER_BUTTON_4) && (button_state & USER_BUTTON_4)) 
 	{
 		printk("button 4 down, one meas and classification with current direction =%d\n",direction);
@@ -106,7 +111,7 @@ static void button_changed(uint32_t button_state, uint32_t has_changed)
 	}		
 }
 
-
+// ite maini
 void main(void)
 {
 	int err;
@@ -128,7 +133,7 @@ void main(void)
 	printk("ADC initialization failed!");
 	return;
 	}
-
+// välkyttää valoja vain!
 	while (1) 
 	{
 		//struct Measurement m = readADCValue();

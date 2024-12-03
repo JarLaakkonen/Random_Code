@@ -38,7 +38,7 @@ int measurements[6][3]={
 int CM[6][6]= {0};
 
 
-
+                                 // tulostetaan Confusion matrix??!
 void printConfusionMatrix(void)
 {
 	printk("Confusion matrix = \n");
@@ -48,9 +48,10 @@ void printConfusionMatrix(void)
 		printk("cp%d %d   %d   %d   %d   %d   %d\n",i+1,CM[i][0],CM[i][1],CM[i][2],CM[i][3],CM[i][4],CM[i][5]);
 	}
 }
-
+                                             // Tee tämä vasta kun pystyt tunnistamaan oikean asennon niin voit deometlla
 void makeHundredFakeClassifications(void)
 {
+
    /*******************************************
    Jos ja toivottavasti kun teet toteutuksen paloissa eli varmistat ensin,
    että etäisyyden laskenta 6 keskipisteeseen toimii ja osaat valita 6 etäisyydestä

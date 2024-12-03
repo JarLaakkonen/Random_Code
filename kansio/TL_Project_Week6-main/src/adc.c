@@ -24,7 +24,7 @@ static const struct adc_dt_spec adc_channels[] = {
 
 
 
-
+                            // debug tavaraa!!
 void printDebugInfo(void)
 {
    printk("printing first adc_dt_spec structure contents for all channels\n");
@@ -40,7 +40,7 @@ void printDebugInfo(void)
    }
 
 }
-
+                                // käynnistetään ADC luku!
 int initializeADC(void)
 {
 
@@ -62,7 +62,7 @@ int initializeADC(void)
     return 0;
 
 }
-
+                                        // luetaan anturin data
 struct Measurement readADCValue(void)
 {
 	int16_t buf;
