@@ -48,11 +48,11 @@ void printConfusionMatrix(void)
 		printk("cp%d %d   %d   %d   %d   %d   %d\n",i+1,CM[i][0],CM[i][1],CM[i][2],CM[i][3],CM[i][4],CM[i][5]);
 	}
 }
-                                             // Tee tämä vasta kun pystyt tunnistamaan oikean asennon niin voit deometlla
+                                             //Alempi Tee tämä vasta kun pystyt tunnistamaan oikean asennon niin voit demotella
 void makeHundredFakeClassifications(void)
 {
-
-   /*******************************************
+   // oma koodini tekee 6x 100 x 3 feikki arvoa! 
+      /*******************************************
    Jos ja toivottavasti kun teet toteutuksen paloissa eli varmistat ensin,
    että etäisyyden laskenta 6 keskipisteeseen toimii ja osaat valita 6 etäisyydestä
    voittajaksi sen lyhyimmän etäisyyden, niin silloin voit käyttää tätä aliohjelmaa
@@ -74,6 +74,7 @@ void makeOneClassificationAndUpdateConfusionMatrix(int direction)
 
 int calculateDistanceToAllCentrePointsAndSelectWinner(int x,int y,int z)
 {
+   // tehty qt
    /***************************************
    Tämän aliohjelma ottaa yhden kiihtyvyysanturin mittauksen x,y,z,
    laskee etäisyyden kaikkiin 6 K-means keskipisteisiin ja valitsee
