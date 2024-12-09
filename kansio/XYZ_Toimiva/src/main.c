@@ -16,7 +16,9 @@
 #include <zephyr/devicetree.h>
 
 #include "confusion.h"
-
+//thread varten
+#define STACKSIZE 1024
+#define PRIORITY 7
 
 // ledit käyttöön
 #define USER_LED1         	 	DK_LED1
@@ -30,19 +32,33 @@
 #define USER_BUTTON_3           DK_BTN3_MSK
 #define USER_BUTTON_4           DK_BTN4_MSK
 
-#define DEBUG 1  // 0 = changes direction when button 3 is pressed
+#define DEBUG 0  // 0 = changes direction when button 3 is pressed
                  // 1 = fake 100 measurements done to each 6 directions when 3 pressed.
-static int direction = -1;	// 0 = x direction high
+static int direction = 0;	// 0 = x direction high
 							// 1 = x directon low	
 							// 2 = y direction high
 							// 3 = y direction low
 							// 4 = z direction high
 							// 5 = z direction low
-                				 
-
+						
+volatile uint_fast8_t Position= 0;			 
+volatile uint_fast8_t LastPosition;
 LOG_MODULE_REGISTER(MAIN, LOG_LEVEL_INF);
 
+void Sensor_Val_print(){
+	while(1){
+	struct Measurement m = readADCValue();
+		Position=MinValCalc(m.x , m.y , m.z);
+		if (Position!=LastPosition){
+		printk("Asento on =%d ja X=%d Y=%d Z=%d \n", Position , m.x, m.y , m.z);
+		LastPosition=Position;
+		k_sleep(K_MSEC(50));
+		}
 
+	 k_sleep(K_MSEC(100));
+	 
+	 }
+	}
 // buttoni handleri!
 static void button_changed(uint32_t button_state, uint32_t has_changed){
 	// Debugausta varten
@@ -51,8 +67,16 @@ static void button_changed(uint32_t button_state, uint32_t has_changed){
 
 
 	if ((has_changed & USER_BUTTON_1) && (button_state & USER_BUTTON_1)) {
+		
 		printk("Button 1 down, printing current Confusion Matrix\n");
 		printConfusionMatrix();
+		struct Measurement m = readADCValue();
+		printk("X = %d\n",m.x);
+		printk("Y= %d\n",m.y);
+		printk("Z= %d\n",m.z);
+		k_sleep(K_MSEC(1000));
+		
+		
 	}
 
 	if ((has_changed & USER_BUTTON_2) && (button_state & USER_BUTTON_2)) 
@@ -67,8 +91,8 @@ static void button_changed(uint32_t button_state, uint32_t has_changed){
 		printk("Button 3 down, making fake 100 meas or one real meas depending on DEBUG state\n");
 		// vaihda Debug arvoa jos haluat käyttää Elsen jälkeisiä komentoja
 		#if DEBUG
-		direction = 0;
-		makeHundredFakeClassifications();
+		direction = -1;
+		randomdata();
 		printConfusionMatrix();
 		#else
         direction = (direction +1)%6;
@@ -106,7 +130,17 @@ static void button_changed(uint32_t button_state, uint32_t has_changed){
 	if ((has_changed & USER_BUTTON_4) && (button_state & USER_BUTTON_4)) 
 	{
 		printk("button 4 down, one meas and classification with current direction =%d\n",direction);
-		makeOneClassificationAndUpdateConfusionMatrix(direction);
+		if ( direction ==-1){
+		CaclOneAndUpdConfMatrix(direction);	
+		}
+		else {
+		printk("tehdään 20 arvoa ");
+		for (int i=0;i<20;i++){	
+		struct Measurement m = readADCValue();
+		DatHandler(m.x , m.y , m.z);
+		CaclOneAndUpdConfMatrix(direction);
+		}
+		}
 		printConfusionMatrix();
 	}		
 }
@@ -156,5 +190,5 @@ void main(void)
 
 	}
 }
-
+K_THREAD_DEFINE(Sensor_val_Check, STACKSIZE, Sensor_Val_print, NULL, NULL, NULL, PRIORITY, 0, 0);
 
